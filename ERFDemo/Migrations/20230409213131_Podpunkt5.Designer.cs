@@ -4,6 +4,7 @@ using ERFDemo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERFDemo.Migrations
 {
     [DbContext(typeof(PeopleContext))]
-    partial class PeopleContextModelSnapshot : ModelSnapshot
+    [Migration("20230409213131_Podpunkt5")]
+    partial class Podpunkt5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,24 +63,6 @@ namespace ERFDemo.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("ERFDemo.Models.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Group");
-                });
-
             modelBuilder.Entity("ERFDemo.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -101,21 +86,6 @@ namespace ERFDemo.Migrations
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("ERFDemo.Models.PersonGroup", b =>
-                {
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PersonId", "GroupId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("PersonGroup");
-                });
-
             modelBuilder.Entity("ERFDemo.Models.Address", b =>
                 {
                     b.HasOne("ERFDemo.Models.Person", null)
@@ -123,35 +93,9 @@ namespace ERFDemo.Migrations
                         .HasForeignKey("PersonId");
                 });
 
-            modelBuilder.Entity("ERFDemo.Models.PersonGroup", b =>
-                {
-                    b.HasOne("ERFDemo.Models.Group", "Group")
-                        .WithMany("PersonGroups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERFDemo.Models.Person", "Person")
-                        .WithMany("PersonGroups")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("ERFDemo.Models.Group", b =>
-                {
-                    b.Navigation("PersonGroups");
-                });
-
             modelBuilder.Entity("ERFDemo.Models.Person", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("PersonGroups");
                 });
 #pragma warning restore 612, 618
         }
